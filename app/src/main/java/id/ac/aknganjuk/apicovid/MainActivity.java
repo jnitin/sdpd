@@ -16,6 +16,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.widget.Toast;
+import android.content.SharedPreferences;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -36,11 +37,22 @@ public class MainActivity extends AppCompatActivity {
     private ListView listView;
     private EditText edittext;
     private String countryname = "India";
+    private static String url = "https://api.covid19api.com/summary";
+    private static String DATA_SET = "coviddataSetUrl";
+    private static SharedPreferences prefs = null;
+
 
     ArrayList<HashMap<String, String>> covidList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+       prefs = getPreferences(MODE_PRIVATE);
+
+        // set covid Data set url
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(DATA_SET, url);
+        editor.commit();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         covidList = new ArrayList<>();
@@ -110,11 +122,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             HttpHandler handler = new HttpHandler();
+            String defaulthttpurl = "https://api.covid19api.com/summary";
+            String httpurl= "";
 
-            //making request and getting response
-            //URL untuk ambil data
-            String url = "https://api.covid19api.com/summary";
-                String jsonStr = handler.makeServiceCall(url);
+                //making request and getting response
+                httpurl =   prefs.getString(DATA_SET, defaulthttpurl);
+                String jsonStr = handler.makeServiceCall(httpurl);
 
 
                 if (jsonStr != null) {
@@ -153,8 +166,6 @@ public class MainActivity extends AppCompatActivity {
                                 covid.put("totalConfirmed", thousand.format(Double.valueOf(totalConfirmed)) + " Cases");
                                 covid.put("totalDeaths", thousand.format(Double.valueOf(totalDeaths)) + " Deaths");
                                 covid.put("totalRecovered", thousand.format(Double.valueOf(totalRecovered)) + " Recovered");
-                                //covid.put("date", date);
-
                                 covidList.add(covid);
                             }
                         }
