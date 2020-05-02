@@ -1,6 +1,6 @@
 # ApiCovid
-Project Android sederhana untuk menampilkan data global sebaran covid-19. Aplikasi ini masih sederhana untuk uji coba penggunaan API, JSON, dan menampilkannya.
+Simple Android project to display global data distribution of covid-19. This application is still simple for testing the use of API, JSON, and display it.
 
-Mungkin bakal dijumpai beberapa *error* berhubung semua proses hanya di-tangani 2 (dua) file saja: HttpHandler.java dan MainActivity.java. Monggo kalo mau dikomentari dan dikritik. Jika dianggap bermanfaat, mohon bisa diberi "bintang". Monggo juga kalo mau di-fork.
+There may be some * errors * since all processes are only handled by 2 (two) files: HttpHandler.java and MainActivity.java.
 
-Sumber API: [https://covid19api.com/](https://covid19api.com/)
+API: [https://covid19api.com/](https://covid19api.com/)
