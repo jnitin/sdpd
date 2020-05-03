@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.View.OnKeyListener;
 import android.widget.Toast;
 import android.content.SharedPreferences;
+import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -31,23 +32,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
+import androidx.preference.PreferenceManager;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
     private String TAG = MainActivity.class.getSimpleName();
     private ListView listView;
     private EditText edittext;
-    private String countryname = "India";
     private static String url = "https://api.covid19api.com/summary";
-    private static String DATA_SET = "coviddataSetUrl";
+    private static String DATA_SET = "covidDataSetUrl";
     private static SharedPreferences prefs = null;
-
-
+    private static String COUNTRY = "country";
     ArrayList<HashMap<String, String>> covidList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-       prefs = getPreferences(MODE_PRIVATE);
-
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
         // set covid Data set url
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(DATA_SET, url);
@@ -58,6 +58,15 @@ public class MainActivity extends AppCompatActivity {
         covidList = new ArrayList<>();
         listView = findViewById(R.id.listView);
         addKeyListener();
+    }
+
+    /** Called when the user taps the Send button */
+    public void sendMessage(View view) {
+        Intent intent = new Intent(this, Main2Activity.class);
+        EditText editText = (EditText) findViewById(R.id.editText);
+        String message = editText.getText().toString();
+        intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
     }
 
     public void addKeyListener() {
@@ -76,8 +85,8 @@ public class MainActivity extends AppCompatActivity {
                     // display a floating message
                     Toast.makeText(MainActivity.this,
                             edittext.getText(), Toast.LENGTH_LONG).show();
-                    countryname = edittext.getText().toString();
-                    Log.d("Country Name :", countryname);
+                    //countryname = edittext.getText().toString();
+
                     new GetSummary().execute();
                     return true;
                 }
@@ -124,9 +133,15 @@ public class MainActivity extends AppCompatActivity {
             HttpHandler handler = new HttpHandler();
             String defaulthttpurl = "https://api.covid19api.com/summary";
             String httpurl= "";
+            String countryname= "";
+            String defcountry= "India";
 
                 //making request and getting response
                 httpurl =   prefs.getString(DATA_SET, defaulthttpurl);
+                Log.d("Service URL :", httpurl);
+
+                countryname =   prefs.getString(COUNTRY, defcountry);
+                Log.d("Country Name :", countryname);
                 String jsonStr = handler.makeServiceCall(httpurl);
 
 
@@ -167,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
                                 covid.put("totalDeaths", thousand.format(Double.valueOf(totalDeaths)) + " Deaths");
                                 covid.put("totalRecovered", thousand.format(Double.valueOf(totalRecovered)) + " Recovered");
                                 covidList.add(covid);
+
                             }
                         }
                     } catch (JSONException e) {
