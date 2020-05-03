@@ -57,43 +57,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         covidList = new ArrayList<>();
         listView = findViewById(R.id.listView);
-        addKeyListener();
+        //addKeyListener();
     }
 
-    /** Called when the user taps the Send button */
-    public void sendMessage(View view) {
+    /** Called when the user taps the Settings button */
+    public void onChangeSettings(View view) {
         Intent intent = new Intent(this, Main2Activity.class);
-        EditText editText = (EditText) findViewById(R.id.editText);
-        String message = editText.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
+        intent.putExtra(EXTRA_MESSAGE, "FromActivity1");
         startActivity(intent);
     }
 
-    public void addKeyListener() {
-
-        // get edittext component
-        edittext = (EditText) findViewById(R.id.editText);
-
-        // add a keylistener to keep track user input
-        edittext.setOnKeyListener(new OnKeyListener() {
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                // if keydown and "enter" is pressed
-                if ((event.getAction() == KeyEvent.ACTION_DOWN)
-                        && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-
-                    // display a floating message
-                    Toast.makeText(MainActivity.this,
-                            edittext.getText(), Toast.LENGTH_LONG).show();
-                    //countryname = edittext.getText().toString();
-
-                    new GetSummary().execute();
-                    return true;
-                }
-
-                return false;
-            }
-        });
+    /** Called when the user taps the Load Button */
+    public void onLoadData(View view) {
+        new GetSummary().execute();
     }
 
     private class GetSummary extends AsyncTask<Void, Void, Void> {
@@ -139,12 +115,9 @@ public class MainActivity extends AppCompatActivity {
                 //making request and getting response
                 httpurl =   prefs.getString(DATA_SET, defaulthttpurl);
                 Log.d("Service URL :", httpurl);
-
                 countryname =   prefs.getString(COUNTRY, defcountry);
                 Log.d("Country Name :", countryname);
                 String jsonStr = handler.makeServiceCall(httpurl);
-
-
                 if (jsonStr != null) {
                     try {
                         JSONObject jsonObject = new JSONObject(jsonStr);

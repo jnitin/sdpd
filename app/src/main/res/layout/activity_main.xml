@@ -142,23 +142,22 @@
 
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvGlobal">
-
-        <requestFocus />
-
-    </EditText>
 
     <Button
         android:id="@+id/buttonView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editText"
-        android:onClick="sendMessage"
-        android:text="Set Country"></Button>
+        android:layout_below="@id/tvGlobal"
+        android:onClick="onChangeSettings"
+        android:text="Change Settings"></Button>
+
+    <Button
+        android:id="@+id/button1View"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonView"
+        android:onClick="onLoadData"
+        android:text="Load"></Button>
 
 
     <ListView
