@@ -10,21 +10,16 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.view.View.OnKeyListener;
 import android.widget.EditText;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnKeyListener;
+
 import android.widget.Toast;
 import android.content.SharedPreferences;
 import android.content.Intent;
-import android.content.ContentValues;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -40,7 +35,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
 import androidx.preference.PreferenceManager;
-import android.widget.SimpleCursorAdapter;
 
 public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
@@ -106,21 +100,13 @@ public class MainActivity extends AppCompatActivity {
                Toast.makeText(getApplicationContext(),data.globalConfirmerdCases,Toast.LENGTH_SHORT).show();
                Log.d(TAG, "**********************Value is: " + data.globalConfirmerdCases);
             }
-
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
-
-
     }
-
-
-
-
-
 
     /** Called when the user taps the Settings button */
     public void onChangeSettings(View view) {
@@ -176,8 +162,7 @@ public class MainActivity extends AppCompatActivity {
 
                         JSONObject global = jsonObject.getJSONObject("Global");
 
-
-
+                        // Get required information from received json object
                         currentdate = jsonObject.getString("Date");
                         globalConfirmed = global.getString("TotalConfirmed");
                         globalNewConfirmed = global.getString("NewConfirmed");
@@ -186,12 +171,10 @@ public class MainActivity extends AppCompatActivity {
                         globalRecovered = global.getString("TotalRecovered");
                         globalNewRecovered = global.getString("NewRecovered");
 
-                        //ambil array Countries
+                        //array Countries List
                         JSONArray countries = jsonObject.getJSONArray("Countries");
-
                         Log.e(TAG, "JSON Country: " + countries);
-
-                        //looping semua countries
+                        //looping  countries
                         for (int i = 0; i < countries.length(); i++) {
                             JSONObject c = countries.getJSONObject(i);
 
@@ -200,8 +183,6 @@ public class MainActivity extends AppCompatActivity {
                                 String totalConfirmed = c.getString("TotalConfirmed");
                                 String totalDeaths = c.getString("TotalDeaths");
                                 String totalRecovered = c.getString("TotalRecovered");
-                                //String date = c.getString("Date");
-
                                 HashMap<String, String> covid = new HashMap<>();
 
                                 covid.put("country", country);
@@ -213,13 +194,11 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                     } catch (JSONException e) {
-                        //e.printStackTrace();
                         Log.e(TAG, "JSON parsing error: " + e.getMessage());
                     }
                 } else {
                     Log.e(TAG, "Couldn't get JSON from server. Check LogCat for possible errors!");
                 }
-
             return null;
         }
 
@@ -238,7 +217,6 @@ public class MainActivity extends AppCompatActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
             if(progressBar.isShown()){
                 progressBar.setVisibility(View.GONE);
                 ListAdapter listAdapter = new SimpleAdapter(
@@ -248,14 +226,11 @@ public class MainActivity extends AppCompatActivity {
                 );
                 listView.setAdapter(listAdapter);
             }
-
             GlobalCovidData globalCovidData = new GlobalCovidData(globalConfirmed,globalNewConfirmed,
                     globalDeaths,globalNewDeaths,
                     globalRecovered,globalNewRecovered,currentdate);
             myRef = database.getReference().child("globalCovidData");
             myRef.setValue(globalCovidData);
-
         }
     }
-
 }

@@ -11,7 +11,6 @@ public class GlobalCovidData {
 
     //Default constructer
     public GlobalCovidData(){
-
     }
 
     public GlobalCovidData(String confirmedCases  , String newConfirmedCases,String deaths,

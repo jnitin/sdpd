@@ -2,7 +2,6 @@ package id.ac.aknganjuk.apicovid;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -11,7 +10,6 @@ import android.widget.EditText;
 import androidx.preference.PreferenceManager;
 import android.content.SharedPreferences;
 
-import android.os.Bundle;
 
 public class Main2Activity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
