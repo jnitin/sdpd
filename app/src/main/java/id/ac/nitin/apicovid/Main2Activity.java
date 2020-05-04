@@ -9,12 +9,14 @@ import android.view.View;
 import android.widget.EditText;
 import androidx.preference.PreferenceManager;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 
 public class Main2Activity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
     private static SharedPreferences prefs = null;
     private static String COUNTRY = "country";
+    private static final String TAG = "SETTINGS";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +27,6 @@ public class Main2Activity extends AppCompatActivity {
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-
         // Capture the layout's TextView and set the string as its text
         TextView textView = findViewById(R.id.textView);
         textView.setText(message);
@@ -36,6 +37,7 @@ public class Main2Activity extends AppCompatActivity {
         Intent intent = new Intent(this, Main2Activity.class);
         EditText editText = findViewById(R.id.editText);
         String defaultcountry = editText.getText().toString();
+        Log.i(TAG, "Settings:Country Selected :" + defaultcountry);
         // set covid Data country
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(COUNTRY, defaultcountry);

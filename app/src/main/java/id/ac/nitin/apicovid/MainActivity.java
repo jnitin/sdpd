@@ -134,14 +134,15 @@ public class MainActivity extends AppCompatActivity {
     /** Called when the user taps the Load Button */
     public void onLoadData(View view) {
         boolean isOnline;
+        // isOnline flag is set in Broadcast Receiver based on connectivity status
         isOnline =   prefs.getBoolean(ONLINE_STATUS, false);
         if (isOnline) {
             Log.e(TAG, "Device connected to internet");
-            Toast.makeText(getApplicationContext(), "Online", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Online . Current Updated Information shown ", Toast.LENGTH_SHORT).show();
             new GetSummary().execute();
         }else{
-            Log.e(TAG, "Device not connected to internet");
-            Toast.makeText(getApplicationContext(), "Offline", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "Device not connected to internet .");
+            Toast.makeText(getApplicationContext(), "Offline. Last Updated Info Shown ", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -215,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
                                     covid.put("totalConfirmed", thousand.format(Double.valueOf(totalConfirmed)) + " Cases");
                                     covid.put("totalDeaths", thousand.format(Double.valueOf(totalDeaths)) + " Deaths");
                                     covid.put("totalRecovered", thousand.format(Double.valueOf(totalRecovered)) + " Recovered");
+                                    covidList.clear();
                                     covidList.add(covid);
 
                                 }

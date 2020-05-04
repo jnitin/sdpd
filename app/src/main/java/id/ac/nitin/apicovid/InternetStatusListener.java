@@ -7,6 +7,7 @@ import android.widget.Toast;
 import android.net.ConnectivityManager;
 import androidx.preference.PreferenceManager;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 public class InternetStatusListener extends BroadcastReceiver {
 
@@ -23,8 +24,10 @@ public class InternetStatusListener extends BroadcastReceiver {
             );
             if (noConnectivity) {
                 Toast.makeText(context, "Disconnected", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Device disconnected .");
             } else {
                 Toast.makeText(context, "Connected", Toast.LENGTH_SHORT).show();
+                Log.i(TAG, "Device connected .");
             }
 
             SharedPreferences.Editor editor = prefs.edit();
