@@ -18,6 +18,13 @@ import android.view.View.OnKeyListener;
 import android.widget.Toast;
 import android.content.SharedPreferences;
 import android.content.Intent;
+import android.content.ContentValues;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -33,6 +40,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
 import androidx.preference.PreferenceManager;
+import android.widget.SimpleCursorAdapter;
 
 public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
@@ -44,10 +52,17 @@ public class MainActivity extends AppCompatActivity {
     private static SharedPreferences prefs = null;
     private static String COUNTRY = "country";
     ArrayList<HashMap<String, String>> covidList;
+    private FirebaseDatabase database = null;
+    private DatabaseReference myRef = null;
+    private GlobalCovidData data = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        final TextView writeArea;
+        writeArea = (TextView) findViewById(R.id.tvRecovered);
+
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
         // set covid Data set url
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(DATA_SET, url);
@@ -57,8 +72,55 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         covidList = new ArrayList<>();
         listView = findViewById(R.id.listView);
-        //addKeyListener();
+
+        // Get Firebase Database instance and global covid data node
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference().child("globalCovidData");
+
+        // Read from the database
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                //String value = dataSnapshot.getValue(String.class);
+                DecimalFormat thousand = new DecimalFormat("#,###");
+                TextView tvGlobalConfirmed = findViewById(R.id.tvGlobalConfirmed);
+                TextView tvGlobalNewConfirmed = findViewById(R.id.tvGlobalNewConfirmed);
+                TextView tvGlobalDeaths = findViewById(R.id.tvGlobalDeaths);
+                TextView tvGlobalNewDeaths = findViewById(R.id.tvGlobalNewDeaths);
+                TextView tvGlobalRecovered = findViewById(R.id.tvGlobalRecovered);
+                TextView tvGlobalNewRecovered = findViewById(R.id.tvGlobalNewRecovered);
+                TextView tvLastUpdate = findViewById(R.id.tvLastUpdate);
+
+
+                data = dataSnapshot.getValue(GlobalCovidData.class);
+                tvLastUpdate.setText(data.date);
+                tvGlobalConfirmed.setText(thousand.format(Double.valueOf(data.globalConfirmerdCases)));
+                tvGlobalDeaths.setText(thousand.format(Double.valueOf(data.globalDeaths)));
+                tvGlobalRecovered.setText(thousand.format(Double.valueOf(data.globalRecovered)));
+                tvGlobalNewConfirmed.setText("+ " + thousand.format(Double.valueOf(data.globalNewConfirmerdCases)));
+                tvGlobalNewDeaths.setText("+ " + thousand.format(Double.valueOf(data.globalNewDeaths)));
+                tvGlobalNewRecovered.setText("+ " + thousand.format(Double.valueOf(data.globalNewRecovered)));
+                //writeArea.setText(value);
+               Toast.makeText(getApplicationContext(),data.globalConfirmerdCases,Toast.LENGTH_SHORT).show();
+               Log.d(TAG, "**********************Value is: " + data.globalConfirmerdCases);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
+
     }
+
+
+
+
+
 
     /** Called when the user taps the Settings button */
     public void onChangeSettings(View view) {
@@ -75,27 +137,17 @@ public class MainActivity extends AppCompatActivity {
     private class GetSummary extends AsyncTask<Void, Void, Void> {
         ProgressBar progressBar = findViewById(R.id.progressBar);
 
-        String tanggal = "";
+        String currentdate = "";
         String globalConfirmed = "";
         String globalNewConfirmed = "";
         String globalDeaths = "";
         String globalNewDeaths = "";
         String globalRecovered = "";
         String globalNewRecovered = "";
-
-        TextView tvGlobalConfirmed = findViewById(R.id.tvGlobalConfirmed);
-        TextView tvGlobalNewConfirmed = findViewById(R.id.tvGlobalNewConfirmed);
-        TextView tvGlobalDeaths = findViewById(R.id.tvGlobalDeaths);
-        TextView tvGlobalNewDeaths = findViewById(R.id.tvGlobalNewDeaths);
-        TextView tvGlobalRecovered = findViewById(R.id.tvGlobalRecovered);
-        TextView tvGlobalNewRecovered = findViewById(R.id.tvGlobalNewRecovered);
-        TextView tvLastUpdate = findViewById(R.id.tvLastUpdate);
-
         DecimalFormat thousand = new DecimalFormat("#,###");
-
         //format string tanggal jadi date
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        String tgl = null;
+        String dt = null;
 
         @Override
         protected void onPreExecute(){
@@ -124,7 +176,9 @@ public class MainActivity extends AppCompatActivity {
 
                         JSONObject global = jsonObject.getJSONObject("Global");
 
-                        tanggal = jsonObject.getString("Date");
+
+
+                        currentdate = jsonObject.getString("Date");
                         globalConfirmed = global.getString("TotalConfirmed");
                         globalNewConfirmed = global.getString("NewConfirmed");
                         globalDeaths = global.getString("TotalDeaths");
@@ -175,23 +229,15 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
 
             try {
-                Date date = dateFormat.parse(tanggal);
+                Date date = dateFormat.parse(currentdate);
                 SimpleDateFormat dateLocal = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss");
                 dateLocal.setTimeZone(TimeZone.getDefault());
-                tgl = dateLocal.format(date);
-                Log.e("Cek Tanggal", tgl);
+                dt = dateLocal.format(date);
+                Log.e("Current date", dt);
 
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
-            tvLastUpdate.setText(tgl);
-            tvGlobalConfirmed.setText(thousand.format(Double.valueOf(globalConfirmed)));
-            tvGlobalDeaths.setText(thousand.format(Double.valueOf(globalDeaths)));
-            tvGlobalRecovered.setText(thousand.format(Double.valueOf(globalRecovered)));
-            tvGlobalNewConfirmed.setText("+ " + thousand.format(Double.valueOf(globalNewConfirmed)));
-            tvGlobalNewDeaths.setText("+ " + thousand.format(Double.valueOf(globalNewDeaths)));
-            tvGlobalNewRecovered.setText("+ " + thousand.format(Double.valueOf(globalNewRecovered)));
 
             if(progressBar.isShown()){
                 progressBar.setVisibility(View.GONE);
@@ -202,6 +248,14 @@ public class MainActivity extends AppCompatActivity {
                 );
                 listView.setAdapter(listAdapter);
             }
+
+            GlobalCovidData globalCovidData = new GlobalCovidData(globalConfirmed,globalNewConfirmed,
+                    globalDeaths,globalNewDeaths,
+                    globalRecovered,globalNewRecovered,currentdate);
+            myRef = database.getReference().child("globalCovidData");
+            myRef.setValue(globalCovidData);
+
         }
     }
+
 }

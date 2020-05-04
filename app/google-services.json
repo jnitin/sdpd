@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "663592225920",
+    "firebase_url": "https://apicovid-ecde3.firebaseio.com",
+    "project_id": "apicovid-ecde3",
+    "storage_bucket": "apicovid-ecde3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:663592225920:android:6e243eca71834309df6a65",
+        "android_client_info": {
+          "package_name": "id.ac.aknganjuk.apicovid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "663592225920-e25tru9nhemldmi42f4nvqs24rkjfam3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACCSDniCTckUlPBMJFcApDAVmSiEMW8EA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "663592225920-e25tru9nhemldmi42f4nvqs24rkjfam3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
