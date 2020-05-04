@@ -2,7 +2,7 @@
     <string name="app_name">World COVID-19 Status</string>
     <string name="title_activity_settings">Settings</string>
     <string name="Button1">Settings</string>
-    <string name="Button2">Fetch Data</string>
+    <string name="Button2">Refresh</string>
     <string name="global_covid_19_distribuition">Global COVID-19 Info</string>
     <string name="final_update">Final update:</string>
     <string name="confirmed">Confirmed</string>
