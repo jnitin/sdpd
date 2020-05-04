@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Global COVID-19</string>
+    <string name="app_name">World COVID-19 Status</string>
     <string name="title_activity_settings">Settings</string>
 
     <!-- Preference Titles -->

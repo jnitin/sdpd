@@ -10,7 +10,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.EditText;
 
 import android.widget.Toast;
 import android.content.SharedPreferences;
@@ -42,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
     private String TAG = MainActivity.class.getSimpleName();
     private ListView listView;
-    private EditText edittext;
     private static String url = "https://api.covid19api.com/summary";
     private static String DATA_SET = "covidDataSetUrl";
     private static SharedPreferences prefs = null;
@@ -99,9 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 tvGlobalNewConfirmed.setText("+ " + thousand.format(Double.valueOf(data.globalNewConfirmerdCases)));
                 tvGlobalNewDeaths.setText("+ " + thousand.format(Double.valueOf(data.globalNewDeaths)));
                 tvGlobalNewRecovered.setText("+ " + thousand.format(Double.valueOf(data.globalNewRecovered)));
-                //writeArea.setText(value);
-               Toast.makeText(getApplicationContext(),data.globalConfirmerdCases,Toast.LENGTH_SHORT).show();
-               Log.d(TAG, "**********************Value is: " + data.globalConfirmerdCases);
+                Log.d(TAG, "**********************Value is: " + data.globalConfirmerdCases);
             }
             @Override
             public void onCancelled(DatabaseError error) {
@@ -138,14 +134,15 @@ public class MainActivity extends AppCompatActivity {
         isOnline =   prefs.getBoolean(ONLINE_STATUS, false);
         if (isOnline) {
             Log.e(TAG, "Device connected to internet");
-            Toast.makeText(getApplicationContext(), "Online . Current Updated Information shown ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "On-line.Fetched Latest Info", Toast.LENGTH_SHORT).show();
             new GetSummary().execute();
         }else{
             Log.e(TAG, "Device not connected to internet .");
-            Toast.makeText(getApplicationContext(), "Offline. Last Updated Info Shown ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Off-line.Last Updated Info Shown", Toast.LENGTH_SHORT).show();
         }
     }
 
+    // AsyncTask Function
     private class GetSummary extends AsyncTask<Void, Void, Void> {
         ProgressBar progressBar = findViewById(R.id.progressBar);
 
