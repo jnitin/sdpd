@@ -42,8 +42,5 @@ public class Main2Activity extends AppCompatActivity {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(COUNTRY, defaultcountry);
         editor.commit();
-
-
     }
-
 }

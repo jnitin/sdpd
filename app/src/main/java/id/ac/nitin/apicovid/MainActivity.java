@@ -172,57 +172,57 @@ public class MainActivity extends AppCompatActivity {
             String defcountry= "India";
 
 
-                //making request and getting response
-                httpurl =   prefs.getString(DATA_SET, defaulthttpurl);
-                Log.d("Service URL :", httpurl);
-                countryname =   prefs.getString(COUNTRY, defcountry);
-                Log.d("Country Name :", countryname);
-                    String jsonStr = handler.makeServiceCall(httpurl);
-                    if (jsonStr != null) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(jsonStr);
+            //making request and getting response
+            httpurl =   prefs.getString(DATA_SET, defaulthttpurl);
+            Log.d("Service URL :", httpurl);
+            countryname =   prefs.getString(COUNTRY, defcountry);
+            Log.d("Country Name :", countryname);
+            String jsonStr = handler.makeServiceCall(httpurl);
+            if (jsonStr != null) {
+                try {
+                    JSONObject jsonObject = new JSONObject(jsonStr);
 
-                            JSONObject global = jsonObject.getJSONObject("Global");
+                    JSONObject global = jsonObject.getJSONObject("Global");
 
-                            // Get required information from received json object
-                            currentdate = jsonObject.getString("Date");
-                            globalConfirmed = global.getString("TotalConfirmed");
-                            globalNewConfirmed = global.getString("NewConfirmed");
-                            globalDeaths = global.getString("TotalDeaths");
-                            globalNewDeaths = global.getString("NewDeaths");
-                            globalRecovered = global.getString("TotalRecovered");
-                            globalNewRecovered = global.getString("NewRecovered");
+                    // Get required information from received json object
+                    currentdate = jsonObject.getString("Date");
+                    globalConfirmed = global.getString("TotalConfirmed");
+                    globalNewConfirmed = global.getString("NewConfirmed");
+                    globalDeaths = global.getString("TotalDeaths");
+                    globalNewDeaths = global.getString("NewDeaths");
+                    globalRecovered = global.getString("TotalRecovered");
+                    globalNewRecovered = global.getString("NewRecovered");
 
-                            //array Countries List
-                            JSONArray countries = jsonObject.getJSONArray("Countries");
-                            Log.e(TAG, "JSON Country: " + countries);
-                            //looping  countries
-                            for (int i = 0; i < countries.length(); i++) {
-                                JSONObject c = countries.getJSONObject(i);
+                    //array Countries List
+                    JSONArray countries = jsonObject.getJSONArray("Countries");
+                    Log.e(TAG, "JSON Country: " + countries);
+                    //looping  countries
+                    for (int i = 0; i < countries.length(); i++) {
+                        JSONObject c = countries.getJSONObject(i);
 
-                                String country = c.getString("Country");
-                                if (country.equals(countryname)) {
-                                    String totalConfirmed = c.getString("TotalConfirmed");
-                                    String totalDeaths = c.getString("TotalDeaths");
-                                    String totalRecovered = c.getString("TotalRecovered");
-                                    HashMap<String, String> covid = new HashMap<>();
+                        String country = c.getString("Country");
+                        if (country.equals(countryname)) {
+                            String totalConfirmed = c.getString("TotalConfirmed");
+                            String totalDeaths = c.getString("TotalDeaths");
+                            String totalRecovered = c.getString("TotalRecovered");
+                            HashMap<String, String> covid = new HashMap<>();
 
-                                    covid.put("country", country);
-                                    covid.put("totalConfirmed", thousand.format(Double.valueOf(totalConfirmed)) + " Cases");
-                                    covid.put("totalDeaths", thousand.format(Double.valueOf(totalDeaths)) + " Deaths");
-                                    covid.put("totalRecovered", thousand.format(Double.valueOf(totalRecovered)) + " Recovered");
-                                    covidList.clear();
-                                    covidList.add(covid);
+                            covid.put("country", country);
+                            covid.put("totalConfirmed", thousand.format(Double.valueOf(totalConfirmed)) + " Cases");
+                            covid.put("totalDeaths", thousand.format(Double.valueOf(totalDeaths)) + " Deaths");
+                            covid.put("totalRecovered", thousand.format(Double.valueOf(totalRecovered)) + " Recovered");
+                            covidList.clear();
+                            covidList.add(covid);
 
-                                }
-                            }
-                        } catch (JSONException e) {
-                            Log.e(TAG, "JSON parsing error: " + e.getMessage());
                         }
                     }
-                else {
-                    Log.e(TAG, "Couldn't get JSON from server. Check LogCat for possible errors!");
+                } catch (JSONException e) {
+                    Log.e(TAG, "JSON parsing error: " + e.getMessage());
                 }
+            }
+            else {
+                Log.e(TAG, "Couldn't get JSON from server. Check LogCat for possible errors!");
+            }
             return null;
         }
 
