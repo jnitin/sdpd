@@ -97,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
                 tvGlobalNewConfirmed.setText("+ " + thousand.format(Double.valueOf(data.globalNewConfirmerdCases)));
                 tvGlobalNewDeaths.setText("+ " + thousand.format(Double.valueOf(data.globalNewDeaths)));
                 tvGlobalNewRecovered.setText("+ " + thousand.format(Double.valueOf(data.globalNewRecovered)));
-                Log.d(TAG, "**********************Value is: " + data.globalConfirmerdCases);
             }
             @Override
             public void onCancelled(DatabaseError error) {
