@@ -9,17 +9,17 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Global COVID-19 Distribuition"
+        android:text="@string/global_covid_19_distribuition"
         android:fontFamily="sans-serif-black"
         android:gravity="center_horizontal"
         android:textSize="24sp"
-        android:id="@+id/tvJudul"/>
+        android:id="@+id/tvTitle"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="Final update: "
-        android:layout_below="@id/tvJudul"
+        android:text="@string/final_update"
+        android:layout_below="@id/tvTitle"
         android:id="@+id/tvLastUpdate" />
 
     <LinearLayout
@@ -43,7 +43,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Confirmed"/>
+                android:text="@string/confirmed"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Deaths"
+                    android:text="@string/deaths"
                     android:textColor="#fff"/>
 
                 <LinearLayout
@@ -112,7 +112,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Recovered"
+                    android:text="@string/recovered"
                     android:textColor="#fff"/>
 
                 <LinearLayout
@@ -146,26 +146,40 @@
 
     <Button
         android:id="@+id/buttonView"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvGlobal"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="21dp"
+        android:layout_marginLeft="21dp"
+        android:layout_marginTop="4dp"
         android:onClick="onChangeSettings"
-        android:text="Change Settings"></Button>
+        android:text="@string/Button1" />
 
     <Button
         android:id="@+id/button1View"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_below="@id/buttonView"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="-46dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginRight="12dp"
         android:onClick="onLoadData"
-        android:text="Load"></Button>
-
+        android:text="@string/Button2"
+        android:layout_alignParentEnd="true" />
 
     <ListView
+        android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_below="@id/buttonView"
-        android:id="@+id/listView"/>
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="77dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="5dp" />
 
     <ProgressBar
         android:layout_width="wrap_content"

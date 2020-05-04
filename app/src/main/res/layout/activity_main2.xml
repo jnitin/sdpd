@@ -17,7 +17,7 @@
         android:layout_marginEnd="202dp"
         android:layout_marginRight="202dp"
         android:layout_marginBottom="586dp"
-        android:text="TextView"
+        android:text="@string/textview"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +32,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:autofillHints="India">
 
         <requestFocus />
 
@@ -50,9 +51,9 @@
         android:layout_marginRight="260dp"
         android:layout_marginBottom="504dp"
         android:onClick="sendMessage"
-        android:text="Set Country"
+        android:text="@string/set_country"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></Button>
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
