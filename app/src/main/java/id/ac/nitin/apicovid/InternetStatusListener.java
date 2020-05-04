@@ -1,10 +1,9 @@
-package id.ac.aknganjuk.apicovid;
+package id.ac.nitin.apicovid;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
-import android.util.Log;
 import android.net.ConnectivityManager;
 import androidx.preference.PreferenceManager;
 import android.content.SharedPreferences;

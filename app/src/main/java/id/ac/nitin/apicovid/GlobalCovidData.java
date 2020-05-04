@@ -1,4 +1,4 @@
-package id.ac.aknganjuk.apicovid;
+package id.ac.nitin.apicovid;
 
 public class GlobalCovidData {
     public String globalConfirmerdCases;

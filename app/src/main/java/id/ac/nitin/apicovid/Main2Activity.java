@@ -1,4 +1,4 @@
-package id.ac.aknganjuk.apicovid;
+package id.ac.nitin.apicovid;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -34,7 +34,7 @@ public class Main2Activity extends AppCompatActivity {
     /** Called when the user taps the Send button */
     public void sendMessage(View view) {
         Intent intent = new Intent(this, Main2Activity.class);
-        EditText editText = (EditText) findViewById(R.id.editText);
+        EditText editText = findViewById(R.id.editText);
         String defaultcountry = editText.getText().toString();
         // set covid Data country
         SharedPreferences.Editor editor = prefs.edit();

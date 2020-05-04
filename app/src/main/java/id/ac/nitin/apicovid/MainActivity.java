@@ -1,4 +1,4 @@
-package id.ac.aknganjuk.apicovid;
+package id.ac.nitin.apicovid;
 
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
@@ -57,11 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        final TextView writeArea;
-        writeArea = (TextView) findViewById(R.id.tvRecovered);
-
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
         // set covid Data set url
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(DATA_SET, url);
@@ -137,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
     /** Called when the user taps the Load Button */
     public void onLoadData(View view) {
-        boolean isOnline = false;
+        boolean isOnline;
         isOnline =   prefs.getBoolean(ONLINE_STATUS, false);
         if (isOnline) {
             Log.e(TAG, "Device connected to internet");
@@ -160,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
         String globalRecovered = "";
         String globalNewRecovered = "";
         DecimalFormat thousand = new DecimalFormat("#,###");
-        //format string tanggal jadi date
+        //format string  date
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         String dt = null;
 
@@ -175,8 +171,8 @@ public class MainActivity extends AppCompatActivity {
         protected Void doInBackground(Void... voids) {
             HttpHandler handler = new HttpHandler();
             String defaulthttpurl = "https://api.covid19api.com/summary";
-            String httpurl= "";
-            String countryname= "";
+            String httpurl;
+            String countryname;
             String defcountry= "India";
 
 

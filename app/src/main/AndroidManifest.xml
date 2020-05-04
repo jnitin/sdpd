@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="id.ac.aknganjuk.apicovid">
+    package="id.ac.nitin.apicovid">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Put these permissions too.-->

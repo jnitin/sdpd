@@ -1,4 +1,4 @@
-package id.ac.aknganjuk.apicovid;
+package id.ac.nitin.apicovid;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;

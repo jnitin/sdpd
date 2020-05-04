@@ -1,4 +1,4 @@
-package id.ac.aknganjuk.apicovid;
+package id.ac.nitin.apicovid;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("id.ac.aknganjuk.apicovid", appContext.getPackageName());
+        assertEquals("id.ac.nitin.apicovid", appContext.getPackageName());
     }
 }
