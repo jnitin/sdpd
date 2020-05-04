@@ -3,6 +3,8 @@
     package="id.ac.aknganjuk.apicovid">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Put these permissions too.-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -25,6 +27,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

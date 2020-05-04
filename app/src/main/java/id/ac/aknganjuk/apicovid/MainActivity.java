@@ -35,6 +35,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
 import androidx.preference.PreferenceManager;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 
 public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
@@ -49,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase database = null;
     private DatabaseReference myRef = null;
     private GlobalCovidData data = null;
+    private static String ONLINE_STATUS  = "onlinestatus";
+
+    InternetStatusListener exampleBroadcastReceiver = new InternetStatusListener();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         covidList = new ArrayList<>();
         listView = findViewById(R.id.listView);
+
+        new GetSummary().execute();
 
         // Get Firebase Database instance and global covid data node
         database = FirebaseDatabase.getInstance();
@@ -108,6 +115,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(exampleBroadcastReceiver, filter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(exampleBroadcastReceiver);
+    }
+
     /** Called when the user taps the Settings button */
     public void onChangeSettings(View view) {
         Intent intent = new Intent(this, Main2Activity.class);
@@ -117,7 +137,16 @@ public class MainActivity extends AppCompatActivity {
 
     /** Called when the user taps the Load Button */
     public void onLoadData(View view) {
-        new GetSummary().execute();
+        boolean isOnline = false;
+        isOnline =   prefs.getBoolean(ONLINE_STATUS, false);
+        if (isOnline) {
+            Log.e(TAG, "Device connected to internet");
+            Toast.makeText(getApplicationContext(), "Online", Toast.LENGTH_SHORT).show();
+            new GetSummary().execute();
+        }else{
+            Log.e(TAG, "Device not connected to internet");
+            Toast.makeText(getApplicationContext(), "Offline", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private class GetSummary extends AsyncTask<Void, Void, Void> {
@@ -150,53 +179,55 @@ public class MainActivity extends AppCompatActivity {
             String countryname= "";
             String defcountry= "India";
 
+
                 //making request and getting response
                 httpurl =   prefs.getString(DATA_SET, defaulthttpurl);
                 Log.d("Service URL :", httpurl);
                 countryname =   prefs.getString(COUNTRY, defcountry);
                 Log.d("Country Name :", countryname);
-                String jsonStr = handler.makeServiceCall(httpurl);
-                if (jsonStr != null) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(jsonStr);
+                    String jsonStr = handler.makeServiceCall(httpurl);
+                    if (jsonStr != null) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(jsonStr);
 
-                        JSONObject global = jsonObject.getJSONObject("Global");
+                            JSONObject global = jsonObject.getJSONObject("Global");
 
-                        // Get required information from received json object
-                        currentdate = jsonObject.getString("Date");
-                        globalConfirmed = global.getString("TotalConfirmed");
-                        globalNewConfirmed = global.getString("NewConfirmed");
-                        globalDeaths = global.getString("TotalDeaths");
-                        globalNewDeaths = global.getString("NewDeaths");
-                        globalRecovered = global.getString("TotalRecovered");
-                        globalNewRecovered = global.getString("NewRecovered");
+                            // Get required information from received json object
+                            currentdate = jsonObject.getString("Date");
+                            globalConfirmed = global.getString("TotalConfirmed");
+                            globalNewConfirmed = global.getString("NewConfirmed");
+                            globalDeaths = global.getString("TotalDeaths");
+                            globalNewDeaths = global.getString("NewDeaths");
+                            globalRecovered = global.getString("TotalRecovered");
+                            globalNewRecovered = global.getString("NewRecovered");
 
-                        //array Countries List
-                        JSONArray countries = jsonObject.getJSONArray("Countries");
-                        Log.e(TAG, "JSON Country: " + countries);
-                        //looping  countries
-                        for (int i = 0; i < countries.length(); i++) {
-                            JSONObject c = countries.getJSONObject(i);
+                            //array Countries List
+                            JSONArray countries = jsonObject.getJSONArray("Countries");
+                            Log.e(TAG, "JSON Country: " + countries);
+                            //looping  countries
+                            for (int i = 0; i < countries.length(); i++) {
+                                JSONObject c = countries.getJSONObject(i);
 
-                            String country = c.getString("Country");
-                            if (country.equals(countryname)) {
-                                String totalConfirmed = c.getString("TotalConfirmed");
-                                String totalDeaths = c.getString("TotalDeaths");
-                                String totalRecovered = c.getString("TotalRecovered");
-                                HashMap<String, String> covid = new HashMap<>();
+                                String country = c.getString("Country");
+                                if (country.equals(countryname)) {
+                                    String totalConfirmed = c.getString("TotalConfirmed");
+                                    String totalDeaths = c.getString("TotalDeaths");
+                                    String totalRecovered = c.getString("TotalRecovered");
+                                    HashMap<String, String> covid = new HashMap<>();
 
-                                covid.put("country", country);
-                                covid.put("totalConfirmed", thousand.format(Double.valueOf(totalConfirmed)) + " Cases");
-                                covid.put("totalDeaths", thousand.format(Double.valueOf(totalDeaths)) + " Deaths");
-                                covid.put("totalRecovered", thousand.format(Double.valueOf(totalRecovered)) + " Recovered");
-                                covidList.add(covid);
+                                    covid.put("country", country);
+                                    covid.put("totalConfirmed", thousand.format(Double.valueOf(totalConfirmed)) + " Cases");
+                                    covid.put("totalDeaths", thousand.format(Double.valueOf(totalDeaths)) + " Deaths");
+                                    covid.put("totalRecovered", thousand.format(Double.valueOf(totalRecovered)) + " Recovered");
+                                    covidList.add(covid);
 
+                                }
                             }
+                        } catch (JSONException e) {
+                            Log.e(TAG, "JSON parsing error: " + e.getMessage());
                         }
-                    } catch (JSONException e) {
-                        Log.e(TAG, "JSON parsing error: " + e.getMessage());
                     }
-                } else {
+                else {
                     Log.e(TAG, "Couldn't get JSON from server. Check LogCat for possible errors!");
                 }
             return null;
